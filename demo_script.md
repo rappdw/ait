@@ -2,6 +2,8 @@
 
 A guide for demoing AIT to a non-technical user. The goal: sit someone down, tell them they have an AI team, and watch what happens.
 
+> **The Assignment:** Before writing any more code, find one non-technical business person and sit them in front of AIT's current MVP. Don't explain anything. Don't demo. Just say "tell it what you need help with" and watch what happens. The surprise — what they do that you didn't expect — will tell you more about what to build next than this entire design doc.
+
 ## Night Before: Prep (~10 minutes)
 
 ### 1. Install dependencies
