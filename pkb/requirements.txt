@@ -1,0 +1,15 @@
+# PKB — Personal Knowledge Base
+# Core (required)
+click>=8.0
+
+# Embedding backends (optional — graceful degradation)
+# sentence-transformers>=2.2.0    # Local embeddings (preferred)
+# openai>=1.0                     # OpenAI API fallback
+
+# Vector search (optional — falls back to FTS5-only)
+# sqlite-vec>=0.1.0
+
+# Document parsing (optional — extends supported file types)
+# pdfplumber>=0.9                 # PDF extraction
+# python-docx>=0.8                # Word document extraction
+# beautifulsoup4>=4.12            # HTML parsing

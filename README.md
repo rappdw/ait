@@ -13,7 +13,7 @@ A Claude Code plugin that gives you a personal AI team and knowledge base.
 
 ```bash
 # Add this repository as a plugin marketplace
-claude plugin marketplace add <owner>/pka
+claude plugin marketplace add rappdw/ait
 
 # Install the plugin
 claude plugin install pka
