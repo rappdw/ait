@@ -1,4 +1,4 @@
-# PKA — Personal Knowledge Assistant
+# AIT - Your AI Team and Personal Knowlege Base
 
 A Claude Code plugin that gives you a personal AI team and knowledge base.
 
