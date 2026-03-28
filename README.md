@@ -1,4 +1,4 @@
-# AIT - Your AI Team and Personal Knowlege Base
+# AIT - Your AI Team and Personal Knowledge Base
 
 A Claude Code plugin that gives you a personal AI team and knowledge base.
 
@@ -12,17 +12,14 @@ A Claude Code plugin that gives you a personal AI team and knowledge base.
 ## Install
 
 ```bash
-# Add this repository as a plugin marketplace
-claude plugin marketplace add rappdw/ait
-
-# Install the plugin
-claude plugin install pka
+# Install directly from GitHub (marketplace + plugin bundled in one repo)
+claude mcp add-plugin rappdw/ait
 ```
 
 Or for local development:
 
 ```bash
-claude --plugin-dir /path/to/pka
+claude --plugin-dir /path/to/ait
 ```
 
 ## Quick Start
@@ -58,7 +55,20 @@ claude --plugin-dir /path/to/pka
 3. **Team members deliver** to your personal inbox (`{Name}'s Inbox/`).
 4. **The knowledge base** stores and indexes everything for fast retrieval.
 
-## Project Structure (after setup)
+## Repository Structure
+
+```
+ait/
+├── .claude-plugin/        # Plugin + marketplace metadata
+│   ├── plugin.json
+│   └── marketplace.json
+├── skills/                # Claude Code skills (ait-setup, ait-hire, ait-team, ait-ingest)
+├── pkb/                   # Personal Knowledge Base engine (Python)
+├── demo_script.md         # Guide for demoing to non-technical users
+└── README.md
+```
+
+### Project Structure (after running /ait-setup)
 
 ```
 your-project/
@@ -67,7 +77,7 @@ your-project/
 │   └── {hr-director}.md
 ├── CLAUDE.md              # Chief of Staff's orchestrator identity
 ├── Team/                  # Shared workspace
-├── Team Inbox/          # Your input channel: file drops, task requests, reference material
+├── Team Inbox/            # Your input channel: file drops, task requests, reference material
 ├── {Name}'s Inbox/        # Your personal inbox
 └── kb/
     └── pka.db             # SQLite knowledge base

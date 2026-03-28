@@ -1,0 +1,19 @@
+{
+  "name": "ait",
+  "description": "Your AI team and personal knowledge base — Chief of Staff, hiring pipeline, and SQLite-backed search for any project",
+  "version": "0.0.1",
+  "author": {
+    "name": "rappdw"
+  },
+  "homepage": "https://github.com/rappdw/ait",
+  "repository": "https://github.com/rappdw/ait",
+  "license": "MIT",
+  "keywords": [
+    "ai-team",
+    "knowledge-base",
+    "orchestration",
+    "delegation",
+    "agents",
+    "personal-assistant"
+  ]
+}
