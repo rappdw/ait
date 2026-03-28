@@ -14,6 +14,29 @@ allowed-tools:
 
 Process files and add them to the PKA SQLite knowledge base using the Python CLI.
 
+## Step 0: Locate the plugin directory
+
+Before anything else, find where the AIT plugin is installed:
+
+```bash
+AIT_PLUGIN_DIR=""
+for d in ~/.claude/plugins/marketplaces/*/; do
+  if [ -f "$d/.claude-plugin/plugin.json" ] && grep -q '"ait"' "$d/.claude-plugin/plugin.json" 2>/dev/null; then
+    AIT_PLUGIN_DIR="$d"
+    break
+  fi
+done
+[ -z "$AIT_PLUGIN_DIR" ] && [ -f ".claude-plugin/plugin.json" ] && AIT_PLUGIN_DIR="$(pwd)"
+[ -z "$AIT_PLUGIN_DIR" ] && [ -d "pkb" ] && AIT_PLUGIN_DIR="$(pwd)"
+echo "AIT_PLUGIN_DIR=$AIT_PLUGIN_DIR"
+```
+
+All `python -m pkb.cli` commands below must be run with `PYTHONPATH="$AIT_PLUGIN_DIR"` prepended. Also ensure click is available:
+
+```bash
+python3 -c "import click" 2>/dev/null || pip install click>=8.0 2>/dev/null || pip3 install click>=8.0 2>/dev/null
+```
+
 ## Input
 
 If `$ARGUMENTS` is provided, process that specific file or directory. Otherwise, process all files in `Team Inbox/`.
@@ -30,22 +53,22 @@ Use the Python CLI for all database operations. **Never** use raw `sqlite3` comm
 
 **To add a single file:**
 ```bash
-python -m pkb.cli add --db kb/pka.db "path/to/file"
+PYTHONPATH="$AIT_PLUGIN_DIR" python3 -m pkb.cli add --db kb/pka.db "path/to/file"
 ```
 
 **To ingest an entire directory (default: Team Inbox/):**
 ```bash
-python -m pkb.cli ingest --db kb/pka.db "Team Inbox/"
+PYTHONPATH="$AIT_PLUGIN_DIR" python3 -m pkb.cli ingest --db kb/pka.db "Team Inbox/"
 ```
 
 **To ingest recursively:**
 ```bash
-python -m pkb.cli ingest --db kb/pka.db -r "path/to/directory"
+PYTHONPATH="$AIT_PLUGIN_DIR" python3 -m pkb.cli ingest --db kb/pka.db -r "path/to/directory"
 ```
 
 **To add tags during ingestion:**
 ```bash
-python -m pkb.cli add --db kb/pka.db -t "tag1" -t "tag2" "path/to/file"
+PYTHONPATH="$AIT_PLUGIN_DIR" python3 -m pkb.cli add --db kb/pka.db -t "tag1" -t "tag2" "path/to/file"
 ```
 
 The CLI automatically:

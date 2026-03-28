@@ -16,6 +16,33 @@ allowed-tools:
 
 You are running the PKA (Personal Knowledge Assistant) setup wizard. Your job is to scaffold a complete AI team environment in the current project directory.
 
+## Step 0: Locate the plugin directory
+
+Before anything else, find where the AIT plugin is installed so you can access the `pkb` Python module and `schema.sql`. Run:
+
+```bash
+AIT_PLUGIN_DIR=""
+for d in ~/.claude/plugins/marketplaces/*/; do
+  if [ -f "$d/.claude-plugin/plugin.json" ] && grep -q '"ait"' "$d/.claude-plugin/plugin.json" 2>/dev/null; then
+    AIT_PLUGIN_DIR="$d"
+    break
+  fi
+done
+# Also check local plugin dir
+[ -z "$AIT_PLUGIN_DIR" ] && [ -f ".claude-plugin/plugin.json" ] && AIT_PLUGIN_DIR="$(pwd)"
+echo "AIT_PLUGIN_DIR=$AIT_PLUGIN_DIR"
+```
+
+Store this path — you'll need it in Step 5 for database initialization. All `python -m pkb.cli` commands must be run with `PYTHONPATH="$AIT_PLUGIN_DIR"` prepended, and `schema.sql` is at `$AIT_PLUGIN_DIR/pkb/schema.sql`.
+
+If `AIT_PLUGIN_DIR` is empty, check if `pkb/` exists in the current directory (local dev mode). If neither is found, tell the user the plugin may not be installed correctly.
+
+Also ensure the `click` Python package is available:
+
+```bash
+python3 -c "import click" 2>/dev/null || pip install click>=8.0 2>/dev/null || pip3 install click>=8.0 2>/dev/null
+```
+
 ## Step 1: Introductions
 
 Start by introducing yourself:
@@ -223,17 +250,26 @@ Before naming a new hire, read the current CLAUDE.md to see existing team member
 
 ## Step 5: Initialize the knowledge base
 
-Create the directory `kb/` in the project root, then initialize the database using one of these methods:
+Create the directory `kb/` in the project root, then initialize the database. Use the `AIT_PLUGIN_DIR` found in Step 0.
 
 **Option A — Python CLI (preferred):**
 ```bash
-python -m pkb.cli init --db kb/pka.db
+PYTHONPATH="$AIT_PLUGIN_DIR" python3 -m pkb.cli init --db kb/pka.db
 ```
 
-**Option B — Direct SQL from the canonical schema file:**
+**Option B — Python with schema.sql (if Option A fails):**
 ```bash
-sqlite3 kb/pka.db < pkb/schema.sql
+python3 -c "
+import sqlite3
+conn = sqlite3.connect('kb/pka.db')
+with open('$AIT_PLUGIN_DIR/pkb/schema.sql') as f:
+    conn.executescript(f.read())
+conn.close()
+print('KB initialized successfully')
+"
 ```
+
+**Option C — If neither works**, use Python's sqlite3 module with inline schema. Create the core tables (items, items_fts, tags, item_tags, categories, item_categories, schema_version) and FTS5 triggers using the schema defined in `$AIT_PLUGIN_DIR/pkb/schema.sql`. Read that file and execute it via `python3 -c "import sqlite3; ..."`.
 
 The schema file (`pkb/schema.sql`) is the single source of truth. It uses `CREATE TABLE IF NOT EXISTS` and `INSERT OR IGNORE` so it's safe to re-run.
 
