@@ -1,6 +1,6 @@
 {
-  "name": "ait-dev",
-  "description": "Development marketplace for AIT — AI team and personal knowledge base",
+  "name": "AI Team (ait)",
+  "description": "Your AI team and personal knowledge base — Chief of Staff, hiring pipeline, and SQLite-backed search for any project",
   "owner": {
     "name": "rappdw"
   },
